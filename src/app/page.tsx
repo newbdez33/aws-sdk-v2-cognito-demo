@@ -10,15 +10,13 @@ AWS.config.update({
   region: "ap-northeast-1",
 })
 
-const ClientId = "replace with your own client id";
-
 const login = () => {
   const payload = {
     AuthFlow: "USER_PASSWORD_AUTH",
-    ClientId: ClientId,
+    ClientId: "s3dkibg9s5ji8nhqpl9oboiha",
     AuthParameters : {
-        USERNAME: "newbdez33+cognitotest@abc.com",
-        PASSWORD: "1234Aa@1234567"
+        USERNAME: "newbdez33+cognitotest@gmail.com",
+        PASSWORD: "Aa@1234567"
     }
   }
   var cognito = new AWS.CognitoIdentityServiceProvider();
@@ -35,9 +33,9 @@ const login = () => {
 
 const signUp = () => {
   const signupRequest:SignUpRequest = {
-    ClientId: ClientId,
-    Username: "newbdez33+cognitotest@abc.com",
-    Password: "1234Aa@1234567",
+    ClientId: "s3dkibg9s5ji8nhqpl9oboiha",
+    Username: "newbdez33+cognitotest@gmail.com",
+    Password: "Aa@1234567",
     UserAttributes: [
       {
         Name: "gender",
