@@ -228,3 +228,37 @@
     transform: rotate(0deg);
   }
 }
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.f {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  gap: 1rem;
+}
+
+.f label {
+  width: 150px;
+}
+
+.f input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(var(--card-border-rgb), 0.3);
+}
+
+.f button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(var(--card-border-rgb), 0.3);
+  background: rgba(var(--card-rgb), 0.1);
+  cursor: pointer;
+}
