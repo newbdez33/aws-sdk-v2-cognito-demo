@@ -29,7 +29,7 @@ const changePassword = () => {
 
 export default function Home() {
   const [clientId, setClientId] = useState("49vc82dntr273p3hs4aru131a7");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("test3");
   const [password, setPassword] = useState("Aa@1234567");
   const [email, setEmail] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
@@ -49,8 +49,7 @@ export default function Home() {
     cognito.initiateAuth(payload, function(err,data) {
         if (err) {
           alert("Error: " + err);
-        }
-        else {
+        } else {
           setOutput(JSON.stringify(data));
         }
     })
@@ -127,7 +126,7 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <textarea rows={8} cols={80}>{output}</textarea>
+        <textarea rows={8} cols={80} value={output} readOnly></textarea>
       </div>
     </main>
   );
