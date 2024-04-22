@@ -1,13 +1,18 @@
 "use client";
-import Image from "next/image";
 import styles from "./page.module.css";
 import AWS from "aws-sdk";
 
 import { useEffect, useState } from "react";
 import { SignUpRequest } from "aws-sdk/clients/cognitoidentityserviceprovider";
 
+const identityPoolId = "ap-northeast-1:e34b2650-6534-4a9d-9175-7c48ab09921e";
+const region = "ap-northeast-1";
+const userPoolId = "ap-northeast-1_5m8RVZmc2";
 AWS.config.update({
-  region: "ap-northeast-1",
+  region: region,
+  credentials: new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: identityPoolId
+  })
 })
 
 const changePassword = () => {
@@ -35,6 +40,7 @@ export default function Home() {
   const [confirmationCode, setConfirmationCode] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
   const [output, setOutput] = useState("");
+  const [selectedFile, setSelectFile] = useState(null as any);
   const login = () => {
     setOutput("");
     const payload = {
@@ -50,6 +56,19 @@ export default function Home() {
         if (err) {
           alert("Error: " + err);
         } else {
+
+          // this is for S3 uploading.
+          AWS.config.update({
+            region: region,
+            credentials: new AWS.CognitoIdentityCredentials({
+              IdentityPoolId: identityPoolId,
+              Logins: {
+                [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: data.AuthenticationResult?.IdToken ?? ""
+              }
+            })
+          });
+
+          console.log(data);
           setOutput(JSON.stringify(data));
         }
     })
@@ -106,6 +125,30 @@ export default function Home() {
         }
     });
   }
+  const handleFileChange = (e:any) => {
+    const file = e.target.files[0];
+    setSelectFile(file);
+  }
+  const handleFileUpload = async () => {
+    console.log(AWS.config.credentials);
+    if (!selectedFile) {
+      return;
+    }
+    const s3 = new AWS.S3();
+    const params = {
+      Bucket: "public-test-0422",
+      Key: selectedFile.name,
+      Body: selectedFile
+    };
+    s3.upload(params, function(err: any, data: any) {
+      if (err) {
+        alert("Error: " + err);
+      } else {
+        setOutput(JSON.stringify(data));
+      }
+    });
+  
+  }
   useEffect(() => {
     //login();
     //signUp();
@@ -123,6 +166,10 @@ export default function Home() {
           <button onClick={login}>Login</button>
           <button onClick={signUp}>Sign Up</button>
           <button onClick={confirmSignUp}>Confirm Signup</button>
+          <button onClick={handleFileUpload}>Upload</button>
+        </div>
+        <div className={styles.row}>
+          <input type="file" onChange={(e) => { handleFileChange(e)}} />
         </div>
       </div>
       <div>
