@@ -147,7 +147,6 @@ export default function Home() {
         setOutput(JSON.stringify(data));
       }
     });
-  
   }
   useEffect(() => {
     //login();
